@@ -2,10 +2,12 @@
 
 Channel::Channel()
 {
+    
 }
 
 Channel::~Channel()
 {
+    
 }
 
 Channel::Channel(Channel const &obj)
@@ -17,11 +19,6 @@ Channel::Channel(std::string const &name, std::string const &pass) : _Name(name)
 {
 
 }
-
-// Channel &Channel::operator=(Channel const &obj)
-// {
-    
-// }
 
 std::string Channel::getPass()
 {

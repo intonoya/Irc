@@ -1,5 +1,10 @@
 #include "User.hpp"
 
+User::User(int fd, std::string const &hostname, std::string const &nickname, std::string const &username) : _FileDescriptor(fd), _HostName(hostname), _Nickname(nickname), _UserName(username)
+{
+
+}
+
 User::User()
 {
 
@@ -73,7 +78,6 @@ void User::ReplyMsg(const std::string &msg)
     SendMsg(":" + getMessage() + " " + msg);
 }
 
-
 void User::Registration()
 {
     if (_Pass && !_UserName.empty() && !_Name.empty() && !_Nickname.empty())
@@ -84,29 +88,34 @@ void User::Registration()
     }
 }
 
-void User::JoinTheChannel(Channel *channel)
+bool User::IsRegistered()
 {
-    _Channel.push_back(channel);
-    channel->join(this);
+    return (_Registration);
 }
 
-void User::LeaveTheChannel(Channel *channel)
-{
-      for(std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
-    {
-        if(*it == channel)
-        {
-            it = _Channel.erase(it);
-            delete channel;
-            break;
-        }
-    }
-}
+// void User::JoinTheChannel(Channel *channel)
+// {
+//     _Channel.push_back(channel);
+//     channel->join(this);
+// }
 
-void User::LeaveUser(int delete)
-{
-    (void)delete;
-    for (std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
-        (*it)->part(this);
-    _Channel.clear();
-}
+// void User::LeaveTheChannel(Channel *channel)
+// {
+//       for(std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
+//     {
+//         if(*it == channel)
+//         {
+//             it = _Channel.erase(it);
+//             delete channel;
+//             break;
+//         }
+//     }
+// }
+
+// void User::LeaveUser(int del)
+// {
+//     (void)del;
+//     for (std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
+//         (*it)->part(this);
+//     _Channel.clear();
+// }

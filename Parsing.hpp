@@ -1,8 +1,6 @@
-#include <iostream>
-#include <string>
-#include <map>
-#include <cstdio>
-#include <cstdlib>
+#ifndef PARSING_HPP
+#define PARSING_HPP
+
 
 //Command responses:
 
@@ -42,9 +40,23 @@
 #define ERR_BADCHANMASK(source, command)        "476 " + source + " " + command + " :Bad Channel Mask"
 #define ERR_CHANOPRIVSNEEDED(source, command)   "482 " + source + " " + command + " :You're not channel operator"
 
+#include <iostream>
+#include <string>
+#include <map>
+#include <cstdio>
+#include <cstdlib>
+#include "User.hpp"
+
+class User;
+
 class Parsing
 {
+    private:
+        std::vector<User *> _User;
     public:
         static void IsValidNumeric(std::string const &str);
-        static int ItExists(User *user);
+        int ItExists(User *user);
 };
+
+
+#endif
