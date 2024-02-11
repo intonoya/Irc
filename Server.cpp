@@ -162,7 +162,7 @@ void Server::RunTheServer()
     }
 }
 
-bool    Server::TheBuffer(iterator &it)
+bool    Server::TheBuffer(std::map<int, User*>::iterator &it)
 {
     char    buffer[1024];
     int     value;
@@ -202,9 +202,8 @@ void Server::NewUser()
     std::cout << "Users' connection: " << _User.size() << std::endl;
 }
 
-void Server::DeleteUser()
+void Server::DeleteUser(std::map<int, User*>::iterator &it)
 {
-    std::map<int, User *>::iterator it;
     std::cout << "User disconnected: " << it->second->getMessage() << std::endl;
 
     it->second->LeaveUser(0); // user leaves the channel

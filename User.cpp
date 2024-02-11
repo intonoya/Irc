@@ -120,7 +120,7 @@ void User::LeaveTheChannel(Channel *channel)
 
 void User::LeaveUser(int user)
 {
-    (void)del;
+    (void)user;
     for (std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
         (*it)->part(this);
     _Channel.clear();
