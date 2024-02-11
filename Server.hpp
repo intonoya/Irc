@@ -27,6 +27,7 @@ class Server
         std::map<std::string, Channel*>	_Channel;
         //std::vector<User *>          _User;
         //std::vector<int>      _NewUser;
+        Commands *_Commands;
     public:
         
         Server();
@@ -45,6 +46,8 @@ class Server
         void NewUser();
         void DeleteUser();
         void RunTheServer();
+
+        bool TheBuffer(iterator &it);
 };
 
 #endif

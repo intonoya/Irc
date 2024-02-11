@@ -1,8 +1,9 @@
 NAME		= ircserv
 
-SRCS		= $(wildcard *.cpp)
+SRCS		= $(wildcard *.cpp) $(wildcard Commands/*.cpp)
 
-OBJS		= $(SRCS:.cpp=.o)
+OBJ_DIR		= obj
+OBJS		= $(addprefix $(OBJ_DIR)/, $(SRCS:.cpp=.o))
 
 CC			= c++
 
@@ -12,14 +13,17 @@ RM			= rm -f
 
 all:		$(NAME)
 
-.cpp.o:
+$(OBJ_DIR)/%.o: %.cpp
+			@mkdir -p $(OBJ_DIR)
+			@mkdir -p $(OBJ_DIR)/Commands
 			@$(CC) $(CFLAGS) -o $@ -c $<
 
 $(NAME):	$(OBJS)
 			@$(CC) $(CFLAGS) -o $(NAME) $(OBJS)
-			@echo "\x1b[32m$(NAME) is compiled!\x1b[32m"
+			@echo "\x1b[32m$(NAME) is compiled! 🤠🐱\x1b[32m"
 
 clean:
+			@rm -rf $(OBJ_DIR)
 			@$(RM) $(OBJS)
 
 fclean: clean
@@ -32,4 +36,4 @@ server: all
 client: 
 		nc localhost 6667
 
-.PHONY:		all clean fclean re run server client
+.PHONY:		all clean fclean re server client

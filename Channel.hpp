@@ -11,21 +11,30 @@ class User;
 class Channel
 {
     private:
-        std::vector<User *> _User;
-        std::string _Name;
-        std::string _Pass;
-        //User *_Admin;
+        std::string _name;
+        std::string _pass;
+        User *_admin;
+
+        std::vector<User *> _users;
 
     public:
-        Channel();
-        ~Channel();
-        Channel(Channel const &obj);
-        Channel(std::string const &name, std::string const &pass);
+        // Channel();
+        // ~Channel();
+        // Channel(Channel const &obj);
+        Channel(std::string const &name, std::string const &pass, User *admin);
+
+        std::string getName();
         std::string getPass();
+        std::vector<User *> getUsers();
+
+        void setName(std::string const &name);
         void setPass(std::string const &pass);
-        void Join(User *user);
-        void Part(User *user);
-        void Kick(User *user, std::string const &msg);
+        
+        bool isAdmin(User *user);
+
+        void join(User *user);
+        void part(User *user);
+        void kick(User *user, std::string const &msg);
 };
 
 #endif
