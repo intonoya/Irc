@@ -1,16 +1,16 @@
 #include "User.hpp"
 
+User::User(int fd, std::string const &hostname) :  _Nickname(), _UserName(), _HostName(hostname), _Name(), _Registration(false), _Pass(false), _FileDescriptor(fd)
+{
+    _Quit = false;
+}
+
 User::User()
 {
 
 }
 
 User::~User()
-{
-
-}
-
-User::User(int fd, std::string const &hostname, std::string const &nickname, std::string const &username) : _HostName(hostname), _Nickname(nickname), _UserName(username), _Registration(true), _isPass(true), _FileDescriptor(fd)
 {
 
 }
@@ -86,7 +86,7 @@ void User::ReplyMsg(const std::string &msg)
 
 void User::Registration()
 {
-    if (_isPass && !_UserName.empty() && !_Name.empty() && !_Nickname.empty())
+    if (_Pass && !_UserName.empty() && !_Name.empty() && !_Nickname.empty())
     {
         _Registration = true;
         ReplyMsg(RPL_WELCOME(_Nickname));
@@ -118,9 +118,9 @@ void User::LeaveTheChannel(Channel *channel)
     }
 }
 
-void User::LeaveUser(int user)
+void User::DeleteUser(int del)
 {
-    (void)user;
+    (void)del;
     for (std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
         (*it)->part(this);
     _Channel.clear();

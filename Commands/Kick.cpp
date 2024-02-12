@@ -1,13 +1,44 @@
-// #include "Commands.hpp"
+#include "Commands.hpp"
 
-// void Commands::Kick(User *user, std::string const &reason)
-// {
-//     std::vector<User *>::iterator tmp;
-//     for (std::vector<User *>::iterator it = _Users.begin(); it != _Users.end(); it++)
-//     {
-//         (*it)->SendMsg(RPL_KICK(user->getMessage(), _name, user->getNickname(), reason));
-//         if (*it == user)
-//             tmp = it;
-//     }
-//     _Users.erase(tmp);
-// }
+void Commands::Kick(User *user, std::vector<std::string> obj)
+{
+    if (obj.empty() || obj.size() < 3)
+    {
+        user->ReplyMsg(ERR_NEEDMOREPARAMS(user->getNickname(), "KICK"));
+        return ;
+    }
+
+    std::string channelName = obj[0];
+    std::string nickname = obj[1];
+    std::string reason = obj[2];
+
+    if (channelName[0] != '#' && channelName[0] != '&')
+    {
+        user->ReplyMsg(ERR_NOSUCHCHANNEL(user->getNickname(), channelName));
+        return ;
+    }
+
+    Channel *channel = _Server->getChannel(channelName);
+    if (channel == NULL)
+    {
+        user->ReplyMsg(ERR_NOSUCHCHANNEL(user->getNickname(), channelName));
+        return ;
+    }
+
+    User *target = channel->getUser(nickname);
+    if (target == NULL)
+    {
+        user->ReplyMsg(ERR_NOSUCHNICK(user->getNickname(), nickname));
+        return ;
+    }
+
+    if (!channel->isAdmin(user))
+    {
+        user->ReplyMsg(ERR_CHANOPRIVSNEEDED(user->getNickname(), channelName));
+        return ;
+    }
+
+    channel->kick(target, reason);
+    target->LeaveTheChannel(channel);
+    // there must be message to all users in the channel that user was kicked
+}

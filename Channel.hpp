@@ -26,11 +26,13 @@ class Channel
         std::string getName();
         std::string getPass();
         std::vector<User *> getUsers();
+        User *getUser(std::string const &nickname);
 
         void setName(std::string const &name);
         void setPass(std::string const &pass);
         
         bool isAdmin(User *user);
+        bool isExist(User *user);
 
         void join(User *user);
         void part(User *user);

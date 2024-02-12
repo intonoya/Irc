@@ -1,1 +1,1 @@
-# ft_irc
+# ftt_irc

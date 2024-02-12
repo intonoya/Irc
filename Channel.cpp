@@ -34,6 +34,16 @@ std::vector<User *> Channel::getUsers()
     return (_users);
 }
 
+User *Channel::getUser(std::string const &nickname)
+{
+    for (std::vector<User *>::iterator it = _users.begin(); it != _users.end(); ++it)
+    {
+        if ((*it)->getNickname() == nickname)
+            return (*it);
+    }
+    return (NULL);
+}
+
 void Channel::setName(std::string const &name)
 {
     _name = name;
@@ -48,6 +58,16 @@ bool Channel::isAdmin(User *user)
 {
     if (user == _admin)
         return (true);
+    return (false);
+}
+
+bool Channel::isExist(User *user)
+{
+    for (std::vector<User *>::iterator it = _users.begin(); it != _users.end(); ++it)
+    {
+        if (*it == user)
+            return (true);
+    }
     return (false);
 }
 

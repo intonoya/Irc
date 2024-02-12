@@ -29,6 +29,7 @@ class Server
         std::map<int, User*>          _User;
         std::map<std::string, int>      _NewUser;
         std::map<std::string, Channel*>	_Channel;
+        typedef std::map<int, User*>::iterator  iterator;
         //std::vector<User *>          _User;
         //std::vector<int>      _NewUser;
         Commands *_Commands;
@@ -48,10 +49,11 @@ class Server
         void setUser(User *user, std::string const &nickname, int fd);
         
         void NewUser();
-        void DeleteUser(std::map<int, User*>::iterator &it);
+        void DeleteUser(iterator &it);
+        void InitTheServer();
         void RunTheServer();
 
-        bool TheBuffer(std::map<int, User*>::iterator &it);
+        bool TheBuffer(iterator &it);
 };
 
 #endif

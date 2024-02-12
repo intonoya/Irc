@@ -5,6 +5,11 @@ Commands::Commands(Server *server) : _Server(server)
     
 }
 
+bool Commands::authRequired() const
+{
+    return (_authRequired);
+}
+
 void Commands::ToUse(User *user)
 {
     std::string line;
@@ -22,28 +27,27 @@ void Commands::ToUse(User *user)
 
     try
     {
-        //Commands *command = _Commands.at(name); het hani commic
+        Commands *command = _Commands.at(name);
 
         std::vector<std::string> arguments;
 
         std::string buf;
-        //std::stringstream ss(line.substr(name.length(), line.length())); het hani commic
+        std::stringstream ss(line.substr(name.size(), line.size()));
         line.substr(name.size(), line.size());
 
-        //while (ss >> buf) het hani commic
+        while (ss >> buf)
             arguments.push_back(buf);
-        if (!user->IsRegistered()) // && command->authRequired()) het hani commic
+        if (!user->IsRegistered() && command->authRequired())
         {
             std::cout<<"blublu"<<std::endl;
-            //user->reply(ERR_NOTREGISTERED(user->getNickname())); het hani commic
+            user->ReplyMsg(ERR_NOTREGISTERED(user->getNickname()));
             return;
         }
-        //command->execute(user, arguments); het hani commic
+        //->execute(user, arguments);
     }
     catch (const std::out_of_range &e)
     {
-        std::cout<<"blabla"<<std::endl;
-        //user->reply(ERR_UNKNOWNCOMMAND(user->getNickname(), name)); het hani commic
+        user->ReplyMsg(ERR_UNKNOWNCOMMAND(user->getNickname(), name)); 
     }
 
     if (user->_Buffer.size())
