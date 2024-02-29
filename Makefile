@@ -31,9 +31,4 @@ fclean: clean
 
 re: fclean all
 
-server: all
-			./$(NAME) 6667 asd
-client: 
-		nc localhost 6667
-
-.PHONY:		all clean fclean re server client
+.PHONY:		all clean fclean re

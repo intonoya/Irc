@@ -7,12 +7,15 @@ int main(int argc, char **argv)
 {
     if(argc != 3)
     {
-        std::cout<<"\33[1;31mErrror: Argument error!\33[1;31m"<<std::endl;
+        std::cout<<"\33[1;31mError: Argument error!\33[1;31m"<<std::endl;
         return 1;
     }
+    
     try
     {
         Parsing::IsValidNumeric(argv[1]);
+        if (!*argv[2])
+            throw std::runtime_error("Error: Empty string!");
     }
     catch(const std::exception& e)
     {
@@ -21,26 +24,8 @@ int main(int argc, char **argv)
     }
 
     Server *server = new Server(atoi(argv[1]), argv[2]);
-    (void)server;
-    User *user = new User(1, "testHost");
-    Channel *channel = new Channel("#testChannel", "testPass", user);
-    Commands *cmd = new Commands(server);
-
-    channel->join(user);
-    channel->kick(user, "testKick");
-
-    // std::vector<std::string> obj;
-    // obj.push_back("test1");
-    // obj.push_back("test2");
-    // cmd->Invite(user, obj);
-
-    std::vector<std::string> obj_join;
-    obj_join.push_back("#testChannel");
-    obj_join.push_back("testPass");
-    cmd->Join(user, obj_join);
-
-    delete user;
-    delete channel;
+    
+    delete server;
 
     return 0;
 }

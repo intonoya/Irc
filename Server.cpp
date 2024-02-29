@@ -6,7 +6,8 @@ Server::Server(int port, std::string const &psw) : _Psw(psw) , _Commands(new Com
     {
         _Port = port;
     }
-    InitTheServer();
+    if (InitTheServer() == -1) 
+        return ; 
     RunTheServer();
 }
 
@@ -83,24 +84,14 @@ User *Server::getUser(std::string const &nickname)
 void Server::setUser(User *user, std::string const &newNickname, int fd)
 {
     std::string oldNickname = user->getNickname();
-    if (!oldNickname.empty())
-    {
-        for (iterator it = _User.begin(); it != _User.end(); ++it)
-        {
-            if (it->second != user)
-                it->second->SendMsg(":" + oldNickname + " NICK " + newNickname);
-        }
-    }
     _NewUser.erase(oldNickname);
     _NewUser.erase(newNickname);
     _NewUser.insert(std::make_pair(newNickname, fd));
-    // _NewUser[newNickname] = fd;
-    // user->setNickname(newNickname);
 }
 
 // Making, running the server: excepting messages, users and etc
 
-void    Server::InitTheServer()
+int    Server::InitTheServer()
 {
     int opt = 1;
 
@@ -108,11 +99,13 @@ void    Server::InitTheServer()
     if (_FileDescriptor == -1)
     {
         std::cout<<"Error: Socket failed!"<<std::endl;
+        return -1;
     }
 
     if (setsockopt(_FileDescriptor, SOL_SOCKET,SO_REUSEADDR, &opt, sizeof(opt)))
     {
         std::cout<<"Error: Setsockopt failed!"<<std::endl;
+        return -1;
     }
     memset(&_Address, 0, sizeof(_Address));
     _Address.sin_family = AF_INET;
@@ -122,12 +115,16 @@ void    Server::InitTheServer()
     if (bind(_FileDescriptor, (struct sockaddr*)&_Address, sizeof(_Address)) < 0)
     {
         std::cout<<"Error: Bind failed!"<<std::endl;
+        return -1;
     }
+    
     if (listen(_FileDescriptor, 100) < 0)
     {
         std::cout<<"Error: Listening failed!"<<std::endl;
+        return -1;
     }
     fcntl(_FileDescriptor, F_SETFL, O_NONBLOCK);
+    return 0;
 }
 
 void    Server::RunTheServer()
@@ -164,9 +161,14 @@ void    Server::RunTheServer()
                 {
                     FD_CLR(it->first, &wr);
                     while (!(it->second->_Buffer).empty())
+                    {
+                        // system("leaks ircserv");
+                        //std::cout << "Buffer: " << it->second->_Buffer << std::endl;
                         _Commands->ToUse(it->second);
+                    }
                     it->second->_Buffer.clear();
-                    if ( it->second->_Quit) {
+                    if ( it->second->_Quit) 
+                    {
                         DeleteUser(it);
                         break ;
                     }
@@ -207,12 +209,12 @@ void Server::NewUser()
 {
     sockaddr_in _ClientAddress;
     socklen_t _AddLen = sizeof(_ClientAddress);
-    //memset(&_Address, 0, _ClientAddress);
     // Accepts a new connection to our server
+
+    memset(&_Address, 0, _AddLen);
     int _Socket = accept(_FileDescriptor, (struct sockaddr *)&_ClientAddress, &_AddLen);
     if (_Socket == -1)
     {
-        //std::cout << "Error: Can't accept a new connection!" << std::endl;
         return;
     }
     fcntl(_Socket, F_SETFL, O_NONBLOCK);
@@ -222,6 +224,7 @@ void Server::NewUser()
     getnameinfo((struct sockaddr *)&_ClientAddress, sizeof(_ClientAddress), hostname, NI_MAXHOST, NULL, 0, NI_NUMERICSERV); // NI_NUMERICSERV: the port is numeric
     User *_NewUser = new User(_Socket, hostname);
     _User.insert(std::make_pair(_Socket, _NewUser));
+
     std::cout << "\x1b[32mNew connection: \x1b[32m" << _NewUser->getMessage() << std::endl;
     std::cout << "\x1b[32mUsers' connected: \x1b[32m" << _User.size() << std::endl;
 }
@@ -229,12 +232,10 @@ void Server::NewUser()
 void    Server::DeleteUser(iterator &it)
 {
     std::cout << "\x1b[32mUser disconnected: \x1b[32m" << it->second->getMessage() << std::endl;
-
-    // user leaves the channel: add a function in User class
     it->second->LeaveTheChannel(0);
     close(it->first);
     _NewUser.erase(it->second->getNickname());
     delete it->second;
     _User.erase(it);
-    std::cout << "Users' connection: " << _User.size() << std::endl;
+    std::cout << "Users' connected: " << _User.size() << std::endl;
 }

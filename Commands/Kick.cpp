@@ -12,6 +12,12 @@ void Commands::Kick(User *user, std::vector<std::string> obj)
     std::string nickname = obj[1];
     std::string reason = obj[2];
 
+    if (reason[0] == ':')
+    reason.erase(0, 1);
+
+    for (size_t i = 3; i < obj.size(); i++)
+        reason += " " + obj[i];
+
     if (channelName[0] != '#' && channelName[0] != '&')
     {
         user->ReplyMsg(ERR_NOSUCHCHANNEL(user->getNickname(), channelName));
@@ -32,13 +38,14 @@ void Commands::Kick(User *user, std::vector<std::string> obj)
         return ;
     }
 
-    if (!channel->isAdmin(user))
+    if (!channel->isAdmin(user) && !channel->isOperator(user))
     {
         user->ReplyMsg(ERR_CHANOPRIVSNEEDED(user->getNickname(), channelName));
         return ;
     }
 
+    channel->sendMsg(user, ":" + user->getNickname() + " KICK " + channelName + " " + nickname + " :" + reason);
+    channel->unsetInvite(target);
     channel->kick(target, reason);
     target->LeaveTheChannel(channel);
-    // there must be message to all users in the channel that user was kicked
 }

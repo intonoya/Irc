@@ -1,0 +1,72 @@
+make.exe --dry-run --always-make --keep-going --print-directory
+make: Entering directory 'c:/Users/User/Desktop/Irc'
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Channel.o -c Channel.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Parsing.o -c Parsing.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Server.o -c Server.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/User.o -c User.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/main.o -c main.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Cap.o -c Commands/Cap.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Commands.o -c Commands/Commands.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Invite.o -c Commands/Invite.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Join.o -c Commands/Join.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Kick.o -c Commands/Kick.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Mode.o -c Commands/Mode.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Nick.o -c Commands/Nick.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Notice.o -c Commands/Notice.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Part.o -c Commands/Part.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Pass.o -c Commands/Pass.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Ping.o -c Commands/Ping.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Pong.o -c Commands/Pong.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/PrivMsg.o -c Commands/PrivMsg.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Quit.o -c Commands/Quit.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Topic.o -c Commands/Topic.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/User.o -c Commands/User.cpp
+mkdir -p obj
+mkdir -p obj/Commands
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o obj/Commands/Who.o -c Commands/Who.cpp
+c++ -Wall -Wextra -Werror -std=c++98 -I. -o ircserv obj/Channel.o obj/Parsing.o obj/Server.o obj/User.o obj/main.o obj/Commands/Cap.o obj/Commands/Commands.o obj/Commands/Invite.o obj/Commands/Join.o obj/Commands/Kick.o obj/Commands/Mode.o obj/Commands/Nick.o obj/Commands/Notice.o obj/Commands/Part.o obj/Commands/Pass.o obj/Commands/Ping.o obj/Commands/Pong.o obj/Commands/PrivMsg.o obj/Commands/Quit.o obj/Commands/Topic.o obj/Commands/User.o obj/Commands/Who.o
+echo "\x1b[32mircserv is compiled! 🤠🐱\x1b[32m"
+make: Leaving directory 'c:/Users/User/Desktop/Irc'
+ 

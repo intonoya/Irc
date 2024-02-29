@@ -1,18 +1,23 @@
 #include "User.hpp"
 
-User::User(int fd, std::string const &hostname) :  _Nickname(), _UserName(), _HostName(hostname), _Name(), _Registration(false), _Pass(false), _FileDescriptor(fd)
+User::User(int fd, std::string hostname) :  _Nickname(), _UserName(), _HostName(hostname), _Name(), _Registration(false), _Pass(false), _FileDescriptor(fd)
 {
     _Quit = false;
-}
-
-User::User()
-{
-
 }
 
 User::~User()
 {
 
+}
+
+bool User::getPass()
+{
+    return (_Pass);
+}
+
+void User::setPass()
+{
+    _Pass = true;
 }
 
 std::string User::getHostName() const
@@ -45,12 +50,17 @@ std::string User::getMessage() const
     return result;
 }
 
+int User::getFd() const
+{
+    return (_FileDescriptor);
+}
+
 void User::setHostName( const std::string hostname)
 {
     _HostName = hostname;
 }
 
-void User::setNickname(const std::string nickname)
+void User::setNickname(std::string nickname)
 {
     _Nickname = nickname;
 }
@@ -65,23 +75,27 @@ void User::setName(const std::string name)
     _Name = name;
 }
 
+void User::setRegistration(bool reg)
+{
+    _Registration = reg;
+}
+
+void User::setQuit(bool status)
+{
+    _Quit = status;
+}
+
 void User::SendMsg(const std::string &msg)
 {
     std::string buffer = msg + "\r\n";
-    (void)_FileDescriptor;
 
-    // delete this
-    std::cout << _Nickname << ": " << buffer;
-    //
-    
-    // uncomment this
-    // if (send(_FileDescriptor, buffer.c_str(), buffer.length(), 0) < 0)
-    //     std::cout << "\33[1;31mError: Can't send the message to the client!\33[1;31m" << std::endl;
+    if (send(_FileDescriptor, buffer.c_str(), buffer.length(), 0) < 0)
+         std::cout << "\33[1;31mError: Can't send the message to the client!\33[1;31m" << std::endl;
 }
 
 void User::ReplyMsg(const std::string &msg)
 {
-    SendMsg(getMessage() + " " + msg);
+    SendMsg(":" + getMessage() + " " + msg);
 }
 
 void User::Registration()
@@ -112,7 +126,6 @@ void User::LeaveTheChannel(Channel *channel)
         if(*it == channel)
         {
             it = _Channel.erase(it);
-            // delete channel; // xz nado ili net
             break;
         }
     }
@@ -124,4 +137,10 @@ void User::DeleteUser(int del)
     for (std::vector<Channel *>::iterator it = _Channel.begin(); it != _Channel.end(); ++it)
         (*it)->part(this);
     _Channel.clear();
+}
+
+void User::Init(std::string const &username, std::string const &name)
+{
+    _UserName = username;
+    _Name = name;
 }
